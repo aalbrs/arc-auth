@@ -26,5 +26,12 @@ namespace ArcAuth.Controllers
         {
             return new RedirectResult("/");
         }
+
+        // example method with policy applied, see app settings
+        [Authorize(Policy = "Viewer")]
+        public ActionResult AuthorisedRequest()
+        {
+            return Ok("Authorised for Viewer policy");
+        }
     }
 }

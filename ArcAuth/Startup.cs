@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Linq;
 
 namespace ArcAuth
 {
@@ -36,7 +35,7 @@ namespace ArcAuth
                     options.DefaultChallengeScheme = ArcGisOauth.AuthenticationSchema;
 
                 })
-                .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(60 * 24 * 14))
+                .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(60 * 24 * 7))
                 .AddArcGisOAuth(appSettings);
             // Add group-based authorisation policies
             services.AddArcGisGroupAuthorisation(appSettings);
@@ -62,15 +61,6 @@ namespace ArcAuth
 
             app.UseRouting();
 
-            // Serve a static app on root URL. Does not have authorisation applied itself, will make API calls. 
-            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-5.0#static-file-authorization
-            app.UseFileServer(new FileServerOptions
-            {
-                EnableDirectoryBrowsing = true,
-                RequestPath = "",
-                EnableDefaultFiles = true
-            });
-
             // Auth applied here and implemented in controllers 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -79,7 +69,20 @@ namespace ArcAuth
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("account", "{controller=Account}/{action=Index}");
+                
             });
+
+            // Serve a static app on root URL. Does not have authorisation applied itself, will make API calls. 
+            // To apply authorisation, set DefaultToSignInRequired = true in appsettings.json.
+            // Also ensure this runs after UseAuthorization().
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files?view=aspnetcore-5.0#static-file-authorization-1
+            app.UseFileServer(new FileServerOptions
+            {
+                EnableDirectoryBrowsing = true,
+                RequestPath = "",
+                EnableDefaultFiles = true
+            });
+
         }
     }
 }

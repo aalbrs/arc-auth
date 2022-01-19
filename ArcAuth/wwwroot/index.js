@@ -1,7 +1,10 @@
 ﻿
 const onSignInClick = () => {
     open('./account/signin', "_self");
+}
 
+const onSignOutClick = () => {
+    open('./account/signout', "_self");
 }
 
 const getInfo = async () => {

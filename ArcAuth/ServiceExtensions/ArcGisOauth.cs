@@ -1,9 +1,9 @@
 ﻿using ArcAuth.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -86,6 +86,15 @@ namespace ArcAuth.ServiceExtensions
                         policySetting.Groups.ForEach((group) => policy.RequireClaim(group));
                     });
                 }
+
+                // optionally, add a fallback policy requiring authentication
+                if (settings.Authorisation.DefaultToSignInRequired)
+                {
+                    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                }
+                
             });
             return services;
         }

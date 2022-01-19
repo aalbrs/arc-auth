@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ArcAuth.Controllers
@@ -25,6 +24,14 @@ namespace ArcAuth.Controllers
         public ActionResult SignIn()
         {
             return new RedirectResult("/");
+        }
+
+        // sign user out
+        [AllowAnonymous]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync();
+            return Ok("User has been signed out");
         }
 
         // example method with policy applied, see app settings

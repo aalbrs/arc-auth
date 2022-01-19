@@ -19,6 +19,7 @@ namespace ArcAuth
 
     public class AuthorisationSettings
     {
+        public bool DefaultToSignInRequired { get; set; }
         public List<PolicySetting> Policies { get; set; }
     }
 

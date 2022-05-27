@@ -1,6 +1,6 @@
 ## ArcAuth
 
-An example .NET 5 API project using ArcGIS Online or ArcGIS Enterprise as an authentication provider through OAuth. 
+An example .NET 6 API project using ArcGIS Online or ArcGIS Enterprise as an authentication provider through OAuth. 
 
 To get started, add an application in ArcGIS and update the appsettings file. 
 
